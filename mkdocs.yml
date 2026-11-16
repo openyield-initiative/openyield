@@ -1,0 +1,17 @@
+site_name: OpenYield
+site_description: Narrow-road autonomous cooperation research foundation
+theme: readthedocs
+nav:
+  - Home: index.md
+  - Getting started: getting-started.md
+  - Model and monitors: model.md
+  - Research context: research.md
+  - Roadmap: roadmap.md
+  - Decisions: decisions.md
+  - Contributing: contributing.md
+  - Verification: verification.md
+  - Development updates:
+      - v0.1 foundation: updates/v0.1.md
+      - Introductory article (draft): updates/why-agree.md
+  - Handoff template: handoff-template.md
+  - Implementation plan: implementation-plan.md
