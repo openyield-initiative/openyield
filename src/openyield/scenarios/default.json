@@ -1,8 +1,8 @@
 {
-  "road": {"x": 15, "y": 4, "length": 30, "width": 8},
+  "road": {"x": 15, "y": 4.5, "length": 30, "width": 7},
   "obstacles": [
-    {"x": 5, "y": 6, "length": 6, "width": 2},
-    {"x": 23, "y": 6, "length": 10, "width": 2}
+    {"x": 5, "y": 5.5, "length": 6, "width": 4},
+    {"x": 23, "y": 5.5, "length": 10, "width": 4}
   ],
   "passing_space": {"x": 12, "y": 6, "length": 6, "width": 3},
   "vehicles": [

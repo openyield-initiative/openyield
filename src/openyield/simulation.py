@@ -11,6 +11,17 @@ def _toward(value, target, distance):
     return value + max(-distance, min(distance, target - value))
 
 
+def _rejected_record(value):
+    """Keep invalid numeric proposals inspectable without emitting invalid JSON."""
+    if isinstance(value, float) and not math.isfinite(value):
+        return None
+    if isinstance(value, list):
+        return [_rejected_record(item) for item in value]
+    if isinstance(value, dict):
+        return {key: _rejected_record(item) for key, item in value.items()}
+    return value
+
+
 def scripted_demo(scenario, states, step):
     """Wait in the bay, let B pass, translate sideways, then proceed east."""
     a, b = copy.deepcopy(states)
@@ -53,7 +64,7 @@ def run(scenario, seed=0, controller=None):
         violations = monitor(scenario, states, proposed)
         if violations:
             summary.update(outcome="violation", reason="; ".join(violations),
-                           rejected_step=proposed, rejected_time=step * scenario.dt)
+                           rejected_step=_rejected_record(proposed), rejected_time=step * scenario.dt)
             break
         for old, new in zip(states, proposed, strict=True):
             new["speed"] = math.hypot(new["x"] - old["x"], new["y"] - old["y"]) / scenario.dt

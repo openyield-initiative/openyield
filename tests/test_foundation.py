@@ -112,7 +112,7 @@ def test_boundary_contact_semantics(margin, offset, expected):
     s = parse_scenario(config())
     s.clearance = margin
     states = copy.deepcopy(s.vehicles)
-    states[1]["y"] = states[1]["width"] / 2 + offset
+    states[1]["y"] = 1 + states[1]["width"] / 2 + offset
     assert any(expected in e for e in monitor(s, s.vehicles, states))
 
 
@@ -130,3 +130,44 @@ def test_monitor_rejects_changed_dimensions():
     states = copy.deepcopy(s.vehicles)
     states[0]["length"] = .1
     assert any("invalid state" in e for e in monitor(s, s.vehicles, states))
+
+
+def test_default_bottleneck_cannot_fit_two_vehicle_widths():
+    c = config()
+    road_bottom = c["road"]["y"] - c["road"]["width"] / 2
+    obstacle_bottom = min(o["y"] - o["width"] / 2 for o in c["obstacles"])
+    assert obstacle_bottom - road_bottom < sum(v["width"] for v in c["vehicles"])
+
+
+def test_nonfinite_rejection_remains_exportable(tmp_path):
+    s = parse_scenario(config())
+    def invalid(scenario, states, step):
+        states[0]["x"] = float("nan")
+        return states, ["invalid", "wait"]
+    result = run(s, controller=invalid)
+    assert result["summary"]["outcome"] == "violation"
+    export(s, result, tmp_path)
+    assert json.loads((tmp_path / "summary.json").read_text())["rejected_step"][0]["x"] is None
+
+
+def test_initial_clearance_violation_is_rejected():
+    c = config()
+    c["vehicles"][1]["y"] = 2.625  # top=3.375, obstacle bottom=3.5: only 0.125 m
+    with pytest.raises(ValueError, match="clearance"):
+        parse_scenario(c)
+
+
+def test_swept_obstacle_violation_stops_simulation(tmp_path):
+    c = config()
+    c["obstacles"].append(dict(x=20, y=2.5, length=.1, width=1))
+    s = parse_scenario(c)
+    def jump(scenario, states, step):
+        states[1]["x"] = 16  # both endpoints clear; obstacle at x=20 lies between
+        return states, ["wait", "jump"]
+    result = run(s, controller=jump)
+    assert result["summary"]["outcome"] == "violation"
+    assert "collision" in result["summary"]["reason"]
+    assert result["summary"]["accepted_steps"] == 0
+    assert result["frames"][-1]["vehicles"][1]["x"] == 26
+    export(s, result, tmp_path)
+    assert json.loads((tmp_path / "summary.json").read_text())["outcome"] == "violation"
