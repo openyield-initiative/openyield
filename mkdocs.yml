@@ -5,6 +5,8 @@ nav:
   - Home: index.md
   - Getting started: getting-started.md
   - Model and monitors: model.md
+  - Replay and recording: replay.md
+  - Replay verification: replay-verification.md
   - Research context: research.md
   - Roadmap: roadmap.md
   - Decisions: decisions.md
@@ -15,3 +17,4 @@ nav:
       - Introductory article (draft): updates/why-agree.md
   - Handoff template: handoff-template.md
   - Implementation plan: implementation-plan.md
+  - Replay upgrade plan: replay-upgrade-plan.md

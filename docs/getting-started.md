@@ -15,8 +15,10 @@ Start-Process outputs/default/replay.html
 ```
 
 On Linux/macOS use `python3 -m venv .venv` and `.venv/bin/python` in the remaining
-commands. The replay runs offline in a modern browser: Play/Pause and a frame slider
-allow inspection. It needs no server, external fonts or network resources.
+commands. The replay runs offline in a modern browser. It starts paused; Play/Pause,
+Restart, a recorded-frame slider and 0.5×/1×/2× viewing speeds allow inspection.
+It needs no server, external fonts or network resources. See the
+[replay and recording guide](replay.md) for stages, mobile layout and recording view.
 
 Outputs (ignored by Git): `outputs/default/trace.json`, `summary.json` and
 `replay.html`. Trace schema version 1 includes the complete scenario, each accepted

@@ -101,6 +101,33 @@ def test_export(tmp_path):
     assert "https://" not in html
 
 
+def test_replay_presentation_preserves_default_data(tmp_path):
+    import hashlib
+    s = parse_scenario(config())
+    export(s, run(s, seed=7), tmp_path)
+    # Accepted foundation's data captured before the presentation change.
+    expected = {
+        "trace.json": "4635973573a4bb420a4552f404967ae06f8393f50d831fc9b064dc3f3f93316d",
+        "summary.json": "62c75a6d19434decc0d9f6648de528a54d1f65bd7ba2daf2f0fd24300adafd25",
+    }
+    for name, digest in expected.items():
+        # Windows writes CRLF; normalize only line endings for cross-platform CI.
+        content = (tmp_path / name).read_bytes().replace(b"\r\n", b"\n").replace(b"\n", b"\r\n")
+        assert hashlib.sha256(content).hexdigest() == digest
+    html = (tmp_path / "replay.html").read_text(encoding="utf-8")
+    assert "__TRACE__" not in html and "__STYLE__" not in html and "__SCRIPT__" not in html
+
+
+def test_replay_escapes_untrusted_ids(tmp_path):
+    c = config()
+    c["vehicles"][0]["id"] = "</script><script>alert(1)</script>"
+    s = parse_scenario(c)
+    export(s, run(s), tmp_path)
+    html = (tmp_path / "replay.html").read_text(encoding="utf-8")
+    assert c["vehicles"][0]["id"] not in html
+    assert "\\u003c/script>" in html
+
+
 def test_malformed_json(tmp_path):
     p = tmp_path / "bad.json"
     p.write_text("{bad")
