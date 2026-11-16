@@ -73,3 +73,14 @@ Observed: 30 tests passed; demo success at 73 accepted steps / 18.25 seconds;
 strict documentation build passed; no whitespace errors. Original implementation
 evidence above records the earlier 27-test state; hosted CI for these corrections
 must be checked on the new head separately.
+
+## Milestone acceptance (16 November 2026)
+
+The owner subsequently accepted v0.1 as the scripted simulation foundation.
+[PR #2](https://github.com/openyield-initiative/openyield/pull/2) was merged into
+`main` at commit
+[`0a7f922`](https://github.com/openyield-initiative/openyield/commit/0a7f922f726bb632dea91adc9fdf7855a970d01a).
+The verification entries above describe their historical checkouts and results;
+their pre-merge statements apply to those checks, not the current acceptance status.
+Acceptance does not extend the model's claims or authorize deployment, publication,
+release tagging or starting v0.2.
