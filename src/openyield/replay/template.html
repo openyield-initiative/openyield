@@ -1,0 +1,22 @@
+<!doctype html><html lang="en"><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>OpenYield — annotated scripted replay</title><style>__STYLE__</style>
+<main>
+<section class="composition" aria-label="Recording composition">
+ <header><div><p class="eyebrow">OPENYIELD / RESEARCH FOUNDATION</p><h1>Who gives way?</h1></div><span class="badge">v0.1 · Scripted demo</span></header>
+ <div class="diagram"><canvas id="view" width="1440" height="450" aria-label="Top-down recorded encounter: parked-vehicle obstacles, passing space and eastbound and westbound vehicles"></canvas></div>
+ <div class="legend" aria-label="Diagram legend"><span><i class="swatch bay"></i>Passing space</span><span><i class="swatch parked"></i>Parked-vehicle obstacles</span><span><i class="swatch a"></i><span id="label-a">Eastbound vehicle</span></span><span><i class="swatch b"></i><span id="label-b">Westbound vehicle</span></span></div>
+ <section class="explanation" aria-label="Recorded stage"><div><p class="eyebrow" id="stage-label">STARTING POSITIONS</p><h2 id="stage-title"></h2><p id="stage-detail"></p></div><div class="clock"><span>Simulation time</span><strong id="clock">0.00 s</strong></div></section>
+ <footer>Scripted simulation · No negotiation or realistic steering.</footer>
+</section>
+<section class="controls" aria-label="Replay controls">
+ <div class="buttons"><button id="play" type="button">Play</button><button id="restart" type="button">Restart</button><label class="speed">Playback speed <select id="speed"><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="2">2×</option></select></label><button id="recording" type="button" aria-pressed="false">Recording view</button></div>
+ <label class="timeline">Recorded frame <output id="frame-count"></output><input id="seek" aria-label="Recorded frame" type="range" min="0" value="0" step="1"></label>
+ <p id="playback-status" role="status">Paused at the beginning.</p>
+</section>
+<aside><strong>How to read this demonstration</strong>
+ <p>In the default demonstration, A starts in the passing space. B passes, then A slides sideways and proceeds. These are scripted actions. Rectangles show the exact modeled footprints; this is not a steering model, negotiation method or evidence of real-world safety.</p>
+ <p>Recording view keeps the composition above in 16:9, with the caveat always visible. Use an existing screen recorder to capture that region. On a phone, use the normal layout for reading; record in landscape for legible video.</p>
+ <p>Positions are in metres. Playback shows discrete recorded frames; speed controls change viewing speed only. Returning from a hidden tab stays paused.</p>
+</aside></main>
+<script type="application/json" id="trace">__TRACE__</script><script>__SCRIPT__</script></html>
