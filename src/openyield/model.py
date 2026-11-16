@@ -8,11 +8,17 @@ from .geometry import Rect, contained, pair_violation
 
 
 def number(value, name, positive=False, nonnegative=False):
-    if (isinstance(value, bool) or not isinstance(value, (int, float))
-            or not math.isfinite(value) or (positive and value <= 0)
+    error = f"invalid {name}: expected finite numeric value"
+    if isinstance(value, bool) or not isinstance(value, (int, float)):
+        raise ValueError(error)
+    try:
+        value = float(value)
+    except OverflowError as exc:
+        raise ValueError(error) from exc
+    if (not math.isfinite(value) or (positive and value <= 0)
             or (nonnegative and value < 0)):
-        raise ValueError(f"invalid {name}: expected finite numeric value")
-    return float(value)
+        raise ValueError(error)
+    return value
 
 
 def keys(obj, expected):

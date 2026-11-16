@@ -1,5 +1,7 @@
 import copy
 import json
+import subprocess
+import sys
 from importlib.resources import files
 
 import pytest
@@ -106,6 +108,24 @@ def test_malformed_json(tmp_path):
         load_scenario(p)
 
 
+def test_oversized_integer_is_configuration_error(tmp_path):
+    c = config()
+    c["dt"] = 10**400
+    with pytest.raises(ValueError, match="finite numeric"):
+        parse_scenario(c)
+    path = tmp_path / "oversized.json"
+    path.write_text(json.dumps(c), encoding="utf-8")
+    with pytest.raises(ValueError, match="finite numeric"):
+        load_scenario(path)
+    result = subprocess.run(
+        [sys.executable, "-m", "openyield", "--scenario", str(path)],
+        capture_output=True, text=True,
+    )
+    assert result.returncode == 2
+    assert "invalid dt" in result.stderr
+    assert "Traceback" not in result.stderr
+
+
 @pytest.mark.parametrize("margin,offset,expected", [(0, 0, "road boundary"), (.25, .125, "boundary clearance")])
 def test_boundary_contact_semantics(margin, offset, expected):
     from openyield.monitor import monitor
@@ -116,11 +136,12 @@ def test_boundary_contact_semantics(margin, offset, expected):
     assert any(expected in e for e in monitor(s, s.vehicles, states))
 
 
-def test_monitor_rejects_nonfinite_proposal():
+@pytest.mark.parametrize("value", [float("nan"), float("inf"), 10**400])
+def test_monitor_rejects_nonfinite_proposal(value):
     from openyield.monitor import monitor
     s = parse_scenario(config())
     states = copy.deepcopy(s.vehicles)
-    states[0]["x"] = float("nan")
+    states[0]["x"] = value
     assert any("invalid state" in e for e in monitor(s, s.vehicles, states))
 
 

@@ -1,17 +1,30 @@
-# Provisional roadmap
+# Roadmap
 
-These are planning stages, not release promises or established research results.
+The later milestone scopes below are the agreed research direction. They are
+planning stages, not release promises or established research results. Only v0.1
+has an implementation for review; later milestones have not started.
 
 | Milestone | Intended scope | Evidence/status |
 | --- | --- | --- |
 | v0.1 | Geometry, deterministic script, monitors, replay, tests, local docs | Implemented on the feature branch; see development update for verification. Pending review, no release tag. |
-| v0.2 | Define and implement independent and fixed-priority controllers with common local constraint enforcement | Proposed; not implemented or validated. |
-| v0.3 | Minimal decentralized geometry-aware negotiation, with explicit state and disagreement handling | Proposed; protocol and evaluation design undecided. |
-| v0.4 | Scenario suite and controlled comparative experiments | Proposed; metrics, baselines and statistical analysis not yet established. |
-| v0.5 | Robustness investigation and research synthesis | Proposed; uncertainty and communication conditions need a separate approved design. |
+| v0.2 | Baseline Algorithms and Reproducible Scenarios: independent and fixed-priority strategies and reproducible encounter scenarios | Agreed scope; not implemented or validated. |
+| v0.3 | Cooperative Negotiation | Agreed scope; not implemented. Protocol and evaluation design remain undecided. |
+| v0.4 | Robustness and Experiments: communication failures, sensor uncertainty, sensitivity analysis and statistical comparisons | Agreed scope; not implemented or evaluated. |
+| v0.5 | Scientific Publication: literature synthesis, mathematical formulation, results/discussion and manuscript | Agreed scope; not started. No publication or submission is authorized by this roadmap. |
 
-For v0.2, first define progress, deadlock, failure, completion time and fairness
-metrics; make destination semantics controller-independent; add more bottleneck
-geometries; verify equivalent information and constraints across policies. Review
-literature before choosing mechanisms or making novelty claims. Keep communication
-and optimization outside v0.1. More realistic motion requires its own validation.
+## Implementation proposals for later review
+
+The following suggestions are proposals within the agreed direction, not approved
+changes to milestone scope or authorization to start later work:
+
+- For v0.2, define progress, deadlock, failure, completion time and fairness metrics;
+  make destination semantics controller-independent; add more bottleneck geometries;
+  and verify equivalent information and local constraint enforcement across policies.
+- For v0.3, consider a minimal decentralized, geometry-aware protocol with explicit
+  state and disagreement handling.
+- For v0.4, develop a scenario suite and controlled comparative experiments under
+  the agreed robustness topics, with an explicit statistical analysis plan.
+
+Review literature before choosing mechanisms or making novelty claims. Keep
+communication and optimization outside v0.1. More realistic motion requires its
+own validation. Detailed designs and experiments remain subject to review.

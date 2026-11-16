@@ -48,3 +48,28 @@ monitoring tests, strict docs build and visual replay inspection passed locally.
 Documentation distinguishes implemented behavior from proposed research; article
 is a draft. PR/review and hosted CI status are reported separately in the handoff.
 No merge, deployment, publication or release tagging was performed.
+
+## Review corrections (16 November 2026)
+
+Restored the agreed v0.2–v0.5 scopes in the roadmap and separated implementation
+suggestions from those scopes. Oversized JSON integers now follow the existing
+`ValueError` configuration-validation path instead of raising `OverflowError`.
+The shared numeric validator also guards proposed controller states. Regression
+coverage checks direct parsing, JSON loading, CLI exit 2 without a traceback,
+and rejection of nonfinite or oversized proposed positions.
+
+From the review checkout, used the existing sibling development environment with
+the checkout's source explicitly selected:
+
+```powershell
+$env:PYTHONPATH = (Join-Path $PWD 'src')
+..\openyield\.venv\Scripts\python -m pytest -q
+..\openyield\.venv\Scripts\python -m openyield --output outputs/default --seed 7
+..\openyield\.venv\Scripts\python -m mkdocs build --strict
+git diff --check
+```
+
+Observed: 30 tests passed; demo success at 73 accepted steps / 18.25 seconds;
+strict documentation build passed; no whitespace errors. Original implementation
+evidence above records the earlier 27-test state; hosted CI for these corrections
+must be checked on the new head separately.

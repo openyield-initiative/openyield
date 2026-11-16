@@ -1,8 +1,6 @@
 """Continuous translation monitors, independent of controller decisions."""
-import math
-
 from .geometry import contained, swept_pair
-from .model import footprint
+from .model import footprint, number
 
 
 def monitor(scenario, before, after):
@@ -11,9 +9,12 @@ def monitor(scenario, before, after):
         return ["invalid state: vehicle count changed"]
     for old, new in zip(before, after):
         if (not isinstance(new, dict) or set(new) != set(old)
-                or any(new[k] != old[k] for k in ("id", "length", "width", "heading"))
-                or any(isinstance(new[k], bool) or not isinstance(new[k], (int, float))
-                       or not math.isfinite(new[k]) for k in ("x", "y", "speed"))):
+                or any(new[k] != old[k] for k in ("id", "length", "width", "heading"))):
+            return ["invalid state: finite positions and unchanged footprints/headings required"]
+        try:
+            for key in ("x", "y", "speed"):
+                number(new[key], key)
+        except ValueError:
             return ["invalid state: finite positions and unchanged footprints/headings required"]
     for i, (old, new) in enumerate(zip(before, after, strict=True)):
         a, end = footprint(old), footprint(new)
